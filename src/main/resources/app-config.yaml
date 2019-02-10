@@ -1,0 +1,28 @@
+#==========================================
+# Spincast configurations overrides
+#==========================================
+spincast:
+    publicAccess:
+        urlBase: https://localhost:12345
+
+    isDevelopementMode: true
+
+#==========================================
+# App specific configurations
+#==========================================
+
+# Database
+db:
+    # By default, the embedded standalone Postgres provided
+    # by the application is started, on port 12346.
+    startEmbeddedDb: true
+    connectionString: jdbc:postgresql://localhost:12346/postgres
+ 
+# Authentication  
+auth:
+    jwt:
+        secret: S5u!iznM!5dT5S!2TqgKX4Zt
+        ttlMinutes: 60
+    
+    
+    

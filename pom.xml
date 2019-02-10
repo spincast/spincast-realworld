@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+    <parent>
+        <groupId>org.spincast</groupId>
+        <artifactId>spincast-parent-pom</artifactId>
+        <version>1.0.3</version>
+    </parent>
+    
+    <artifactId>spincast-realworld</artifactId>
+    <version>1.0.0</version>
+    <name>${project.groupId}:${project.artifactId}</name>
+    <description>RealWorld.io backend implementation using Spincast</description>
+    
+    <properties>
+        <app.mainClass>org.spincast.realworld.App</app.mainClass>
+        <spincast.version>0.9.54</spincast.version>
+    </properties>
+
+	<dependencies>
+    
+        <!--=================================== 
+        Spincast default
+        ====================================-->
+        <dependency>
+            <groupId>org.spincast</groupId>
+            <artifactId>spincast-default</artifactId>
+            <version>${spincast.version}</version>
+        </dependency>
+        
+        <!--=================================== 
+        Spincast JDBC
+        ====================================-->
+        <dependency>
+            <groupId>org.spincast</groupId>
+            <artifactId>spincast-plugins-jdbc</artifactId>
+            <version>${spincast.version}</version>
+        </dependency>
+        
+        <!--=================================== 
+        Spincast Flyway Utils plugin
+        ====================================-->
+        <dependency>
+            <groupId>org.spincast</groupId>
+            <artifactId>spincast-plugins-flyway-utils</artifactId>
+            <version>${spincast.version}</version>
+        </dependency>
+        
+        <!--=================================== 
+        Spincast Crypto plugin
+        ====================================-->
+        <dependency>
+            <groupId>org.spincast</groupId>
+            <artifactId>spincast-plugins-crypto</artifactId>
+            <version>${spincast.version}</version>
+        </dependency>
+        
+        <!--=================================== 
+        Embedded PostgreSQL
+        ====================================-->
+        <dependency>
+            <groupId>com.opentable.components</groupId>
+            <artifactId>otj-pg-embedded</artifactId>
+            <version>0.12.6</version>
+        </dependency>
+        
+        <!--=================================== 
+        HikariCP - connection pool
+        ====================================-->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>3.2.0</version>
+        </dependency>
+        
+        <!--=================================== 
+        JWT management
+        ====================================-->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>3.7.0</version>
+        </dependency>
+
+        <!--=================================== 
+        Logback - Logging implementation.
+        ====================================-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        
+        <!--=================================== 
+        Spincast testing default
+        ====================================-->
+        <dependency>
+            <groupId>org.spincast</groupId>
+            <artifactId>spincast-testing-default</artifactId>
+            <version>${spincast.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+	</dependencies>
+
+	<build>
+
+        <plugins>
+        
+            <!--=================================== 
+            Java 8 is required.
+            ====================================-->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version><!--$NO-MVN-MAN-VER$-->
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <!--=================================== 
+            Fat jar creation
+            ====================================-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <filters>
+                                <!--=================================== 
+                                see : http://stackoverflow.com/a/6743609/843699 
+                                ====================================-->
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <manifestEntries>
+                                        <Main-Class>${app.mainClass}</Main-Class>
+                                    </manifestEntries>
+                                </transformer>
+                            </transformers>   
+                        </configuration>
+                    </execution>
+                </executions> 
+            </plugin>
+            
+            <!--===================================
+            Delete the unnecessary "original-xxx" and "xxx-shaded"
+            generated artifacts.
+            ====================================-->
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>delete-unwanted-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                        <configuration>
+                            <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                            <filesets>
+                                <fileset>
+                                    <directory>${project.build.directory} </directory>
+                                    <includes>
+                                        <include>original-${project.build.finalName}.jar</include>
+                                        <include>${project.build.finalName}-shaded.jar</include>
+                                    </includes>
+                                </fileset>
+                             </filesets>
+                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+        </plugins>
+	</build>
+</project>
