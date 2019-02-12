@@ -22,6 +22,10 @@ anything else than the application itself... Everything is included in the appli
 If at some point you want to reset the data of the application, simply delete the "`dbData`" directory which is going to be 
 created.
 
+**Important!**: The application uses a *self-signed certificate* to accept HTTP**S** requests. In production, you would of course
+use a real certificate (for example a [Let's Encrypt](https://letsencrypt.org) one). Because of this, the clients you use to
+make requests need to accept self-signed certificates! In Postman, you do this by turning *OFF* : `Settings / SSL certificate verification`.
+We preferred this little annoyance over serving plain HTTP.
 
 # Getting started
 
