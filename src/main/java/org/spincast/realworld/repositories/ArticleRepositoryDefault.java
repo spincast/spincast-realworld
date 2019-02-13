@@ -115,7 +115,7 @@ public class ArticleRepositoryDefault extends BaseRepository implements ArticleR
 
     @Override
     public Article updateArticle(Article article) {
-        getJdbcUtils().scopes().autoCommit(getDataSource(), new JdbcQueries<Void>() {
+        getJdbcUtils().scopes().transactional(getDataSource(), new JdbcQueries<Void>() {
 
             @Override
             public Void run(Connection connection) {
