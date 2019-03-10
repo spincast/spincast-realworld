@@ -15,7 +15,7 @@
     
     <properties>
         <app.mainClass>org.spincast.realworld.App</app.mainClass>
-        <spincast.version>0.9.54</spincast.version>
+        <spincast.version>1.0.0</spincast.version>
     </properties>
 
 	<dependencies>

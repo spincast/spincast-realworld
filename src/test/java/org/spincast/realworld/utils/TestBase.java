@@ -6,7 +6,6 @@ import javax.sql.DataSource;
 
 import org.spincast.core.config.SpincastConfig;
 import org.spincast.core.guice.SpincastGuiceModuleBase;
-import org.spincast.defaults.testing.AppBasedDefaultContextTypesTestingBase;
 import org.spincast.plugins.jacksonjson.SpincastJsonManager;
 import org.spincast.plugins.jdbc.JdbcUtils;
 import org.spincast.realworld.App;
@@ -17,6 +16,7 @@ import org.spincast.testing.core.AppTestingConfigs;
 import org.spincast.testing.core.postgres.PostgresDataDir;
 import org.spincast.testing.core.postgres.SpincastTestingPostgres;
 import org.spincast.testing.core.utils.SpincastConfigTestingDefault;
+import org.spincast.testing.defaults.AppBasedDefaultContextTypesTestingBase;
 
 import com.google.inject.Inject;
 import com.google.inject.Module;
